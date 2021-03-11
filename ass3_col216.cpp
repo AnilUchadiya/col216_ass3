@@ -160,8 +160,8 @@ int main(int argc,char** argv){
 		cout << "value of register ";
 		cout << i;
 		cout << "= ";
-		cout << registers[i]<< endl;
+		cout <<hex<< registers[i]<< endl;
 	}
 	cout << "CPI = ";
-	cout << cpi<<endl;
+	cout <<dec<< cpi<<endl;
 }
