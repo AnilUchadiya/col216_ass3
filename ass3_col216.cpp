@@ -5,7 +5,7 @@
 #include <vector>
 using namespace std;
 
-int cpi;
+int cpi=0;
 int PC=0;
 
 
@@ -51,7 +51,7 @@ int main(int argc,char** argv){
 	}
 	MyReadFile.close();
 
-	while(PC!=assembly_program_storage.size()){
+	while(assembly_program_storage[PC].instruction!="END"){
 		if(assembly_program_storage[PC].instruction=="lw"){
 			if(assembly_program_storage[PC].arguements[1]=="$zero"){
 				registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))]=0;
@@ -59,11 +59,57 @@ int main(int argc,char** argv){
 			else{
 				registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))]=registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))];
 			}
+			PC++;
+		}
+		else if(assembly_program_storage[PC].instruction=="sw"){
+			registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))]=registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))];
+			PC++;
 		}
 		else if(assembly_program_storage[PC].instruction=="addi"){
 			registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))]=registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))] + stoi(assembly_program_storage[PC].arguements[2]);
+			PC++;
 		}
-		PC++;
+		else if(assembly_program_storage[PC].instruction=="add"){
+			registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))]=registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))]+registers[stoi(assembly_program_storage[PC].arguements[2].substr(1))];
+			PC++;
+		}
+		else if(assembly_program_storage[PC].instruction=="sub"){
+			registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))]=registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))]-registers[stoi(assembly_program_storage[PC].arguements[2].substr(1))];
+			PC++;
+		}
+		else if(assembly_program_storage[PC].instruction=="mult"){
+			registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))]=(registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))])*(registers[stoi(assembly_program_storage[PC].arguements[2].substr(1))]);
+			PC++;
+		}
+		else if(assembly_program_storage[PC].instruction=="beq"){
+			if(registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))]==registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))]){
+				PC=stoi(assembly_program_storage[PC].arguements[2])-1;
+			}
+			else{
+				PC++;
+			}
+		}
+		else if(assembly_program_storage[PC].instruction=="j"){
+			PC=stoi(assembly_program_storage[PC].arguements[0])-1;
+		}
+		else if(assembly_program_storage[PC].instruction=="bne"){
+			if(registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))]!=registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))]){
+				PC=stoi(assembly_program_storage[PC].arguements[2])-1;
+			}
+			else{
+				PC++;
+			}
+		}
+		else if(assembly_program_storage[PC].instruction=="slt"){
+			if(registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))]<registers[stoi(assembly_program_storage[PC].arguements[2].substr(1))]){
+				registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))]=1;
+			}
+			else{
+				registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))]=0;
+			}
+			PC++;
+		}
+		cpi++;
 	}
 	
 	for(int i=0;i<32;i++){
@@ -72,4 +118,6 @@ int main(int argc,char** argv){
 		cout << "= ";
 		cout << registers[i]<< endl;
 	}
+	cout << "CPI = ";
+	cout << cpi<<endl;
 }
