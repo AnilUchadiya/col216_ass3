@@ -1,8 +1,9 @@
-
+#include <bits/stdc++.h>
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <unordered_map>
 using namespace std;
 
 int cpi = 0;
@@ -16,6 +17,19 @@ struct lines
 	string instruction;
 	vector<string> arguements;
 };
+unordered_map < string ,int > ins_check;
+
+ins_check["add"]=3;
+ins_check["sub"]=3;
+ins_check["mul"]=3;
+ins_check["beq"]=3;
+ins_check["bne"]=3;
+ins_check["slt"]=3;
+ins_check["j"]=1;
+ins_check["lw"]=2;
+ins_check["sw"]=2;
+ins_check["addi"]=3;
+
 
 vector<lines> assembly_program_storage;
 
@@ -35,7 +49,7 @@ void split_inst(string line)
 		}
 		else if ((line[i] == ' ') && flag)
 		{
-			ar1.push_back(line[i]);
+			// ar1.push_back(line[i]);
 			flag = false;
 			l.instruction = ar1;
 			ar1 = "";
@@ -45,6 +59,10 @@ void split_inst(string line)
 	}
 	arg.push_back(ar1);
 	l.arguements = arg;
+	if( ins_check[l.instruction] != l.arguements.size()  )
+	{
+		cout<<"Error: Invalid no of Arguement : "<<l.instruction<<"requered "<<ins_check[l.instruction]<<" arguement provided "<<l.arguements.size()<<" arguement "<<endl;
+	}
 	assembly_program_storage.push_back(l);
 	// return arg;
 }
@@ -69,30 +87,31 @@ int main(int argc, char **argv)
 		/* code */
 		while (getline(MyReadFile, myText))
 		{
-			struct lines l;
-			vector<string> argss;
-			string delimiter = " ";
-			int pos = 0;
-			std::string token;
-			int c = 0;
+			split_inst(myText);
+			// struct lines l;
+			// vector<string> argss;
+			// string delimiter = " ";
+			// int pos = 0;
+			// std::string token;
+			// int c = 0;
 
-			while ((pos = myText.find(delimiter)) != std::string::npos)
-			{
-				token = myText.substr(0, pos);
-				if (c == 0)
-				{
-					l.instruction = token;
-				}
-				else
-				{
-					argss.push_back(token);
-				}
-				myText.erase(0, pos + delimiter.length());
-				c += 1;
-			}
-			argss.push_back(myText);
-			l.arguements = argss;
-			assembly_program_storage.push_back(l);
+			// while ((pos = myText.find(delimiter)) != std::string::npos)
+			// {
+			// 	token = myText.substr(0, pos);
+			// 	if (c == 0)
+			// 	{
+			// 		l.instruction = token;
+			// 	}
+			// 	else
+			// 	{
+			// 		argss.push_back(token);
+			// 	}
+			// 	myText.erase(0, pos + delimiter.length());
+			// 	c += 1;
+			// }
+			// argss.push_back(myText);
+			// l.arguements = argss;
+			// assembly_program_storage.push_back(l);
 		}
 		MyReadFile.close();
 	
@@ -100,6 +119,7 @@ int main(int argc, char **argv)
 		while (assembly_program_storage[PC].instruction != "END")
 		{	
 			lno++;
+			// cout<<assembly_program_storage[PC].instruction<<" "<<assembly_program_storage[PC].arguements[0]<<'\n';
 			if (assembly_program_storage[PC].instruction == "lw")
 			{
 				if (assembly_program_storage[PC].arguements[1] == "$zero")
@@ -174,6 +194,14 @@ int main(int argc, char **argv)
 					registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))] = 0;
 				}
 				PC++;
+			}
+			else{
+				cout << "Invalid instruction : "<<assembly_program_storage[PC].instruction;
+				for(string a : assembly_program_storage[PC].arguements){
+					cout<<" "<<a<<" ";
+				}
+				cout<<endl;
+
 			}
 			cpi++;
 		}
