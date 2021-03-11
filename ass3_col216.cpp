@@ -18,11 +18,9 @@ struct lines
 	vector<string> arguements;
 };
 
-
-
 vector<lines> assembly_program_storage;
 
-bool split_inst(string line,unordered_map < string ,int > ins_check)
+bool split_inst(string line, unordered_map<string, int> ins_check)
 {
 	vector<string> arg;
 	string ar1 = "";
@@ -48,12 +46,12 @@ bool split_inst(string line,unordered_map < string ,int > ins_check)
 	}
 	arg.push_back(ar1);
 	l.arguements = arg;
-	if( ins_check[l.instruction] != l.arguements.size()  )
+	if (ins_check[l.instruction] != l.arguements.size())
 	{
-		cout<<"Error: Invalid no of Arguement : "<<l.instruction<<" requered "<<ins_check[l.instruction]<<" arguement provided "<<l.arguements.size()<<" arguement "<<endl;
+		cout << "Error: Invalid no of Arguement :-" << l.instruction << "-requered " << ins_check[l.instruction] << " arguement provided " << l.arguements.size() << " arguement " << endl;
 		return false;
 	}
-	
+
 	assembly_program_storage.push_back(l);
 	return true;
 	// return arg;
@@ -66,20 +64,20 @@ int main(int argc, char **argv)
 	{
 		registers.push_back((int32_t)0);
 	}
-	unordered_map < string ,int > ins_check;
+	unordered_map<string, int> ins_check;
 
-	ins_check["add"]=3;
-	ins_check["sub"]=3;
-	ins_check["mul"]=3;
-	ins_check["beq"]=3;
-	ins_check["bne"]=3;
-	ins_check["slt"]=3;
-	ins_check["j"]=1;
-	ins_check["lw"]=2;
-	ins_check["sw"]=2;
-	ins_check["addi"]=3;
-	ins_check["END"]=1;
-	ins_check[""]=0;
+	ins_check["add"] = 3;
+	ins_check["sub"] = 3;
+	ins_check["mult"] = 3;
+	ins_check["beq"] = 3;
+	ins_check["bne"] = 3;
+	ins_check["slt"] = 3;
+	ins_check["j"] = 1;
+	ins_check["lw"] = 2;
+	ins_check["sw"] = 2;
+	ins_check["addi"] = 3;
+	ins_check["END"] = 1;
+	// ins_check[""]=0;
 	string myText;
 	ifstream MyReadFile(argv[1]);
 	if (!MyReadFile)
@@ -94,8 +92,8 @@ int main(int argc, char **argv)
 		bool error = false;
 		while (getline(MyReadFile, myText))
 		{
-			if( !split_inst(myText, ins_check) )
-			{	
+			if (!split_inst(myText, ins_check))
+			{
 				error = true;
 			}
 			// struct lines l;
@@ -124,13 +122,14 @@ int main(int argc, char **argv)
 			// assembly_program_storage.push_back(l);
 		}
 		MyReadFile.close();
-		if(error){
-			cout << "Invalid Format Please use proper formatted file"<<endl;
+		if (error)
+		{
+			cout << "Invalid Format Please use proper formatted file" << endl;
 			return 0;
 		}
 
 		while (assembly_program_storage[PC].instruction != "END")
-		{	
+		{
 			lno++;
 			// cout<<assembly_program_storage[PC].instruction<<" "<<assembly_program_storage[PC].arguements[0]<<'\n';
 			if (assembly_program_storage[PC].instruction == "lw")
@@ -208,29 +207,35 @@ int main(int argc, char **argv)
 				}
 				PC++;
 			}
-			else{
-				cout << "Invalid instruction : "<<assembly_program_storage[PC].instruction;
-				for(string a : assembly_program_storage[PC].arguements){
-					cout<<" "<<a<<" ";
+			else
+			{
+				cout << "Invalid instruction : " << assembly_program_storage[PC].instruction;
+				for (string a : assembly_program_storage[PC].arguements)
+				{
+					cout << " " << a << " ";
 				}
-				cout<<endl;
-
+				cout << endl;
 			}
 			cpi++;
 		}
-
 	}
 	catch (std::exception e)
 	{
 		std::cout << "Invalid Instruction at line : " << lno << '\n';
+		cout << "Invalid instruction : " << assembly_program_storage[PC].instruction;
+		for (string a : assembly_program_storage[PC].arguements)
+		{
+			cout << " " << a << " ";
+		}
+		cout << endl;
 		return 0;
 	}
 
 	for (int i = 0; i < 32; i++)
 	{
 		cout << "value of register ";
-		cout << i;
-		cout << "= ";
+		cout << dec << i;
+		cout << " = ";
 		cout << std::hex << registers[i] << endl;
 	}
 	cout << "CPI = ";
