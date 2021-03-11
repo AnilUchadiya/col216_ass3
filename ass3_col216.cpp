@@ -27,89 +27,133 @@ int main(int argc,char** argv){
 
 	string myText;
 	ifstream MyReadFile(argv[1]);
-	while (getline (MyReadFile, myText)) {
-		struct lines l;
-		vector<string> argss;
-		string delimiter=" ";
-		int pos = 0;
-		std::string token;
-		int c=0;
-		while ((pos = myText.find(delimiter)) != std::string::npos) {
-    		token = myText.substr(0, pos);
-    		if(c==0){
-    			l.instruction=token;
-    		}
-    		else{
-    			argss.push_back(token);
-    		}
-    		myText.erase(0, pos + delimiter.length());
-    		c+=1;
-		}
-		argss.push_back(myText);
-		l.arguements=argss;
-		assembly_program_storage.push_back(l);
+	if (!MyReadFile)
+	{
+		cerr << "Error File not found" << '\n';
+		return 0;
 	}
-	MyReadFile.close();
+	int lno = 0;
+	try
+	{
+		/* code */
+		while (getline(MyReadFile, myText))
+		{
+			
+			struct lines l;
+			vector<string> argss;
+			string delimiter = " ";
+			int pos = 0;
+			std::string token;
+			int c = 0;
 
-	while(assembly_program_storage[PC].instruction!="END"){
-		if(assembly_program_storage[PC].instruction=="lw"){
-			if(assembly_program_storage[PC].arguements[1]=="$zero"){
-				registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))]=0;
+			while ((pos = myText.find(delimiter)) != std::string::npos)
+			{
+				token = myText.substr(0, pos);
+				if (c == 0)
+				{
+					l.instruction = token;
+				}
+				else
+				{
+					argss.push_back(token);
+				}
+				myText.erase(0, pos + delimiter.length());
+				c += 1;
 			}
-			else{
-				registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))]=registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))];
-			}
-			PC++;
+			argss.push_back(myText);
+			l.arguements = argss;
+			assembly_program_storage.push_back(l);
 		}
-		else if(assembly_program_storage[PC].instruction=="sw"){
-			registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))]=registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))];
-			PC++;
-		}
-		else if(assembly_program_storage[PC].instruction=="addi"){
-			registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))]=registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))] + stoi(assembly_program_storage[PC].arguements[2]);
-			PC++;
-		}
-		else if(assembly_program_storage[PC].instruction=="add"){
-			registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))]=registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))]+registers[stoi(assembly_program_storage[PC].arguements[2].substr(1))];
-			PC++;
-		}
-		else if(assembly_program_storage[PC].instruction=="sub"){
-			registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))]=registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))]-registers[stoi(assembly_program_storage[PC].arguements[2].substr(1))];
-			PC++;
-		}
-		else if(assembly_program_storage[PC].instruction=="mult"){
-			registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))]=(registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))])*(registers[stoi(assembly_program_storage[PC].arguements[2].substr(1))]);
-			PC++;
-		}
-		else if(assembly_program_storage[PC].instruction=="beq"){
-			if(registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))]==registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))]){
-				PC=stoi(assembly_program_storage[PC].arguements[2])-1;
-			}
-			else{
+		MyReadFile.close();
+	
+	
+
+		while (assembly_program_storage[PC].instruction != "END")
+		{	
+			lno++;
+			if (assembly_program_storage[PC].instruction == "lw")
+			{
+				if (assembly_program_storage[PC].arguements[1] == "$zero")
+				{
+					registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))] = 0;
+				}
+				else
+				{
+					registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))] = registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))];
+				}
 				PC++;
 			}
-		}
-		else if(assembly_program_storage[PC].instruction=="j"){
-			PC=stoi(assembly_program_storage[PC].arguements[0])-1;
-		}
-		else if(assembly_program_storage[PC].instruction=="bne"){
-			if(registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))]!=registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))]){
-				PC=stoi(assembly_program_storage[PC].arguements[2])-1;
-			}
-			else{
+			else if (assembly_program_storage[PC].instruction == "sw")
+			{
+				registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))] = registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))];
 				PC++;
 			}
-		}
-		else if(assembly_program_storage[PC].instruction=="slt"){
-			if(registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))]<registers[stoi(assembly_program_storage[PC].arguements[2].substr(1))]){
-				registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))]=1;
+			else if (assembly_program_storage[PC].instruction == "addi")
+			{
+				registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))] = registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))] + stoi(assembly_program_storage[PC].arguements[2]);
+				PC++;
 			}
-			else{
-				registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))]=0;
+			else if (assembly_program_storage[PC].instruction == "add")
+			{
+				registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))] = registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))] + registers[stoi(assembly_program_storage[PC].arguements[2].substr(1))];
+				PC++;
 			}
-			PC++;
+			else if (assembly_program_storage[PC].instruction == "sub")
+			{
+				registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))] = registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))] - registers[stoi(assembly_program_storage[PC].arguements[2].substr(1))];
+				PC++;
+			}
+			else if (assembly_program_storage[PC].instruction == "mult")
+			{
+				registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))] = (registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))]) * (registers[stoi(assembly_program_storage[PC].arguements[2].substr(1))]);
+				PC++;
+			}
+			else if (assembly_program_storage[PC].instruction == "beq")
+			{
+				if (registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))] == registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))])
+				{
+					PC = stoi(assembly_program_storage[PC].arguements[2]) - 1;
+				}
+				else
+				{
+					PC++;
+				}
+			}
+			else if (assembly_program_storage[PC].instruction == "j")
+			{
+				PC = stoi(assembly_program_storage[PC].arguements[0]) - 1;
+			}
+			else if (assembly_program_storage[PC].instruction == "bne")
+			{
+				if (registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))] != registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))])
+				{
+					PC = stoi(assembly_program_storage[PC].arguements[2]) - 1;
+				}
+				else
+				{
+					PC++;
+				}
+			}
+			else if (assembly_program_storage[PC].instruction == "slt")
+			{
+				if (registers[stoi(assembly_program_storage[PC].arguements[1].substr(1))] < registers[stoi(assembly_program_storage[PC].arguements[2].substr(1))])
+				{
+					registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))] = 1;
+				}
+				else
+				{
+					registers[stoi(assembly_program_storage[PC].arguements[0].substr(1))] = 0;
+				}
+				PC++;
+			}
+			cpi++;
 		}
-		cpi++;
+	}
+
+	catch (std::exception e)
+	{
+		std::cout << "Invalid Instruction at line : " << lno << '\n';
+		return 0;
 	}
 	
 	for(int i=0;i<32;i++){
