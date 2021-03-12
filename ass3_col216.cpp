@@ -4,6 +4,7 @@
 #include <fstream>
 #include <vector>
 #include <unordered_map>
+#include <stdlib.h>
 using namespace std;
 
 int cpi = 0;
@@ -46,6 +47,10 @@ bool split_inst(string line, unordered_map<string, int> ins_check)
 	}
 	arg.push_back(ar1);
 	l.arguements = arg;
+	if(ins_check.count(l.instruction)==0){
+		cout <<"Invalid Instruction "<<l.instruction<<endl;
+		return false;
+	}
 	if (ins_check[l.instruction] != l.arguements.size())
 	{
 		cout << "Error: Invalid no of Arguement :-" << l.instruction << "-requered " << ins_check[l.instruction] << " arguement provided " << l.arguements.size() << " arguement " << endl;
@@ -56,6 +61,19 @@ bool split_inst(string line, unordered_map<string, int> ins_check)
 	return true;
 	// return arg;
 }
+
+void print(){
+
+	for (int i = 0; i < 32; i++)
+	{
+		cout << "value of register ";
+		cout << dec << i;
+		cout << " = ";
+		cout << std::hex << registers[i] << endl;
+
+	}
+}
+
 
 int main(int argc, char **argv)
 {
@@ -231,13 +249,7 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
-	for (int i = 0; i < 32; i++)
-	{
-		cout << "value of register ";
-		cout << dec << i;
-		cout << " = ";
-		cout << std::hex << registers[i] << endl;
-	}
+	print();
 	cout << "CPI = ";
 	cout << std::dec << cpi << endl;
 }
