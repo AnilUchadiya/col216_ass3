@@ -1,0 +1,5 @@
+for compiling --------------------------------
+g++ ass3_col216_final.cpp
+
+for running --------------------------------
+./a.out <path to text/asm input file> 

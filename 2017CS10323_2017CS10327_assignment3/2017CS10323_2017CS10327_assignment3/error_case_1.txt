@@ -1,0 +1,10 @@
+lw $0, $zero
+addu $0 ,$0 ,10
+lw $1, $zero
+lw $2 ,$zero
+addi $0,  $0, 1
+beq $0, $2 ,10
+add $1, $1 ,$2
+addi $2, $2 ,1
+j 6
+END CODE

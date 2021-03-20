@@ -1,0 +1,104 @@
+current clock cycle = 1, updated value of register 0: hex = 0, int = 0
+current clock cycle = 2, updated value of register 0: hex = a, int = 10
+current clock cycle = 3, updated value of register 1: hex = 0, int = 0
+current clock cycle = 4, updated value of register 2: hex = 0, int = 0
+current clock cycle = 5, updated value of register 0: hex = b, int = 11
+current clock cycle = 6, value of register 0 is not equal to value of register 2
+current clock cycle = 7, updated value of register 1: hex = 0, int = 0
+current clock cycle = 8, updated value of register 2: hex = 1, int = 1
+current clock cycle = 9, jumping to the line 6
+current clock cycle = 10, value of register 0 is not equal to value of register 2
+current clock cycle = 11, updated value of register 1: hex = 1, int = 1
+current clock cycle = 12, updated value of register 2: hex = 2, int = 2
+current clock cycle = 13, jumping to the line 6
+current clock cycle = 14, value of register 0 is not equal to value of register 2
+current clock cycle = 15, updated value of register 1: hex = 3, int = 3
+current clock cycle = 16, updated value of register 2: hex = 3, int = 3
+current clock cycle = 17, jumping to the line 6
+current clock cycle = 18, value of register 0 is not equal to value of register 2
+current clock cycle = 19, updated value of register 1: hex = 6, int = 6
+current clock cycle = 20, updated value of register 2: hex = 4, int = 4
+current clock cycle = 21, jumping to the line 6
+current clock cycle = 22, value of register 0 is not equal to value of register 2
+current clock cycle = 23, updated value of register 1: hex = a, int = 10
+current clock cycle = 24, updated value of register 2: hex = 5, int = 5
+current clock cycle = 25, jumping to the line 6
+current clock cycle = 26, value of register 0 is not equal to value of register 2
+current clock cycle = 27, updated value of register 1: hex = f, int = 15
+current clock cycle = 28, updated value of register 2: hex = 6, int = 6
+current clock cycle = 29, jumping to the line 6
+current clock cycle = 30, value of register 0 is not equal to value of register 2
+current clock cycle = 31, updated value of register 1: hex = 15, int = 21
+current clock cycle = 32, updated value of register 2: hex = 7, int = 7
+current clock cycle = 33, jumping to the line 6
+current clock cycle = 34, value of register 0 is not equal to value of register 2
+current clock cycle = 35, updated value of register 1: hex = 1c, int = 28
+current clock cycle = 36, updated value of register 2: hex = 8, int = 8
+current clock cycle = 37, jumping to the line 6
+current clock cycle = 38, value of register 0 is not equal to value of register 2
+current clock cycle = 39, updated value of register 1: hex = 24, int = 36
+current clock cycle = 40, updated value of register 2: hex = 9, int = 9
+current clock cycle = 41, jumping to the line 6
+current clock cycle = 42, value of register 0 is not equal to value of register 2
+current clock cycle = 43, updated value of register 1: hex = 2d, int = 45
+current clock cycle = 44, updated value of register 2: hex = a, int = 10
+current clock cycle = 45, jumping to the line 6
+current clock cycle = 46, value of register 0 is not equal to value of register 2
+current clock cycle = 47, updated value of register 1: hex = 37, int = 55
+current clock cycle = 48, updated value of register 2: hex = b, int = 11
+current clock cycle = 49, jumping to the line 6
+current clock cycle = 50, value of register 0 equals value of register 2, hence jumping to line 10
+***********************************************
+Final values of Registers-
+value of register 0: hex=b, int=11
+value of register 1: hex=37, int=55
+value of register 2: hex=b, int=11
+value of register 3: hex=0, int=0
+value of register 4: hex=0, int=0
+value of register 5: hex=0, int=0
+value of register 6: hex=0, int=0
+value of register 7: hex=0, int=0
+value of register 8: hex=0, int=0
+value of register 9: hex=0, int=0
+value of register 10: hex=0, int=0
+value of register 11: hex=0, int=0
+value of register 12: hex=0, int=0
+value of register 13: hex=0, int=0
+value of register 14: hex=0, int=0
+value of register 15: hex=0, int=0
+value of register 16: hex=0, int=0
+value of register 17: hex=0, int=0
+value of register 18: hex=0, int=0
+value of register 19: hex=0, int=0
+value of register 20: hex=0, int=0
+value of register 21: hex=0, int=0
+value of register 22: hex=0, int=0
+value of register 23: hex=0, int=0
+value of register 24: hex=0, int=0
+value of register 25: hex=0, int=0
+value of register 26: hex=0, int=0
+value of register 27: hex=0, int=0
+value of register 28: hex=0, int=0
+value of register 29: hex=0, int=0
+value of register 30: hex=0, int=0
+value of register 31: hex=0, int=0
+***********************************************
+Total clock cycles = 50
+***********************************************
+number of executions instruction wise -
+	add	11
+	addi	13
+	beq	12
+	j	11
+	lw	3
+***********************************************
+number of executions line wise -
+line 1: 1 times
+line 2: 1 times
+line 3: 1 times
+line 4: 1 times
+line 5: 1 times
+line 6: 12 times
+line 7: 11 times
+line 8: 11 times
+line 9: 11 times

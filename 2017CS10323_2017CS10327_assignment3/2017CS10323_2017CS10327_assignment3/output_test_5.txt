@@ -1,0 +1,55 @@
+current clock cycle = 1, updated value of register 1: hex = 0, int = 0
+current clock cycle = 2, updated value of register 2: hex = 0, int = 0
+current clock cycle = 3, updated value of register 3: hex = 0, int = 0
+current clock cycle = 4, updated value of register 1: hex = 989680, int = 10000000
+current clock cycle = 5, updated value of register 2: hex = 5, int = 5
+current clock cycle = 6, updated value of register 3: hex = 98967b, int = 9999995
+***********************************************
+Final values of Registers-
+value of register 0: hex=0, int=0
+value of register 1: hex=989680, int=10000000
+value of register 2: hex=5, int=5
+value of register 3: hex=98967b, int=9999995
+value of register 4: hex=0, int=0
+value of register 5: hex=0, int=0
+value of register 6: hex=0, int=0
+value of register 7: hex=0, int=0
+value of register 8: hex=0, int=0
+value of register 9: hex=0, int=0
+value of register 10: hex=0, int=0
+value of register 11: hex=0, int=0
+value of register 12: hex=0, int=0
+value of register 13: hex=0, int=0
+value of register 14: hex=0, int=0
+value of register 15: hex=0, int=0
+value of register 16: hex=0, int=0
+value of register 17: hex=0, int=0
+value of register 18: hex=0, int=0
+value of register 19: hex=0, int=0
+value of register 20: hex=0, int=0
+value of register 21: hex=0, int=0
+value of register 22: hex=0, int=0
+value of register 23: hex=0, int=0
+value of register 24: hex=0, int=0
+value of register 25: hex=0, int=0
+value of register 26: hex=0, int=0
+value of register 27: hex=0, int=0
+value of register 28: hex=0, int=0
+value of register 29: hex=0, int=0
+value of register 30: hex=0, int=0
+value of register 31: hex=0, int=0
+***********************************************
+Total clock cycles = 6
+***********************************************
+number of executions instruction wise -
+	addi	2
+	lw	3
+	sub	1
+***********************************************
+number of executions line wise -
+line 1: 1 times
+line 2: 1 times
+line 3: 1 times
+line 4: 1 times
+line 5: 1 times
+line 6: 1 times

@@ -1,27 +1,33 @@
-#include <bits/stdc++.h>
+//#include <bits/stdc++.h>
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <unordered_map>
+#include <map>
 using namespace std;
 
 int cpi = 0;
 int PC = 0;
 
+int line_nu=0;
+
 // 32 32-bits register
 vector<int32_t> registers;
+vector<int> line_countt;
+map<string,int> countt;
 
 struct lines
 {
 	string instruction;
 	vector<string> arguements;
-	int exec;
 };
+
+
 
 vector<lines> assembly_program_storage;
 
-bool split_inst(string line, unordered_map<string, int> ins_check)
+bool split_inst(string line,unordered_map < string ,int > ins_check)
 {
 	vector<string> arg;
 	string ar1 = "";
@@ -47,46 +53,34 @@ bool split_inst(string line, unordered_map<string, int> ins_check)
 	}
 	arg.push_back(ar1);
 	l.arguements = arg;
-	l.exec = 0;
-	if(ins_check.count(l.instruction)==0){
-		cout <<"Invalid Instruction "<<l.instruction<<endl;
+	if(ins_check.find(l.instruction)==ins_check.end()){
+		std::cout << "Invalid Instruction at line : " << line_nu << '\n';
+		cout << "Invalid instruction : "<<l.instruction<<endl;
 		return false;
 	}
-	if (ins_check[l.instruction] != l.arguements.size())
+	if( ins_check[l.instruction] != l.arguements.size()  )
 	{
-		cout << "Error: Invalid no of Arguement :-" << l.instruction << "-requered " << ins_check[l.instruction] << " arguement provided " << l.arguements.size() << " arguement " << endl;
+		cout<<"Error: Invalid no of Arguement :-"<<l.instruction<<"-required "<<ins_check[l.instruction]<<" arguement provided "<<l.arguements.size()<<" arguement "<<endl;
 		return false;
 	}
-
+	
 	assembly_program_storage.push_back(l);
 	return true;
 	// return arg;
 }
-
-
-void print(){
-
-	for (int i = 0; i < 32; i++)
-	{
-		cout << "value of register ";
-		cout << dec << i;
-		cout << " = ";
-		cout << std::hex << registers[i] ;
-		if(registers[i]!=0) cout <<"          ---changed ";
-		cout<<endl;
-	}
-}
-void print_exec(){
-	cout<<"no of times instruction executed"<<endl;
-	for (int i = 0; i < assembly_program_storage.size(); i++)
-	{
-		/* code */
-		cout<<assembly_program_storage[i].instruction<<'\t';
-		cout<<dec<<assembly_program_storage[i].exec<<endl;
-	}
-	
+bool empty(std::ifstream& pFile)
+{
+    return pFile.peek() == std::ifstream::traits_type::eof();
 }
 
+void print_updates(int cpi_value, int registerr_num){
+	cout<< "current clock cycle = "<< cpi_value+1;
+	cout << ", updated value of register "<< registerr_num;
+	cout <<": hex = ";
+	cout<< std::hex << registers[registerr_num];
+	cout <<", int = ";
+	cout << dec<< registers[registerr_num]<<endl;
+}
 
 int main(int argc, char **argv)
 {
@@ -95,25 +89,30 @@ int main(int argc, char **argv)
 	{
 		registers.push_back((int32_t)0);
 	}
-	unordered_map<string, int> ins_check;
 
-	ins_check["add"] = 3;
-	ins_check["sub"] = 3;
-	ins_check["mult"] = 3;
-	ins_check["beq"] = 3;
-	ins_check["bne"] = 3;
-	ins_check["slt"] = 3;
-	ins_check["j"] = 1;
-	ins_check["lw"] = 2;
-	ins_check["sw"] = 2;
-	ins_check["addi"] = 3;
-	ins_check["END"] = 1;
+	unordered_map < string ,int > ins_check;
+
+	ins_check["add"]=3;
+	ins_check["sub"]=3;
+	ins_check["mul"]=3;
+	ins_check["beq"]=3;
+	ins_check["bne"]=3;
+	ins_check["slt"]=3;
+	ins_check["j"]=1;
+	ins_check["lw"]=2;
+	ins_check["sw"]=2;
+	ins_check["addi"]=3;
+	ins_check["END"]=1;
 	// ins_check[""]=0;
 	string myText;
 	ifstream MyReadFile(argv[1]);
 	if (!MyReadFile)
 	{
 		cerr << "Error File not found" << '\n';
+		return 0;
+	}
+	if(empty(MyReadFile)){
+		cerr << "Error Empty file" << '\n';
 		return 0;
 	}
 	int lno = 0;
@@ -123,8 +122,9 @@ int main(int argc, char **argv)
 		bool error = false;
 		while (getline(MyReadFile, myText))
 		{
-			if (!split_inst(myText, ins_check))
-			{
+			line_nu++;
+			if( !split_inst(myText, ins_check) )
+			{	
 				error = true;
 			}
 			// struct lines l;
@@ -153,128 +153,162 @@ int main(int argc, char **argv)
 			// assembly_program_storage.push_back(l);
 		}
 		MyReadFile.close();
-		if (error)
-		{
-			cout << "Invalid Format Please use proper formatted file" << endl;
+		if(error){
+			cout << "Invalid Format Please use proper formatted file"<<endl;
 			return 0;
+		}
+		
+
+		for(int i=0;i<assembly_program_storage.size()-1;i++){
+			line_countt.push_back(0);
 		}
 
 		while (assembly_program_storage[PC].instruction != "END")
-		{
+		{	
+			countt[assembly_program_storage[PC].instruction]++;
 			lno++;
+			line_countt[PC]++;
 			// cout<<assembly_program_storage[PC].instruction<<" "<<assembly_program_storage[PC].arguements[0]<<'\n';
 			if (assembly_program_storage[PC].instruction == "lw")
-			{	
-				assembly_program_storage[PC].exec++;
+			{
 				if (assembly_program_storage[PC].arguements[1] == "$zero")
 				{
 					registers[stol(assembly_program_storage[PC].arguements[0].substr(1))] = 0;
+					print_updates(cpi,stol(assembly_program_storage[PC].arguements[0].substr(1)));
 				}
 				else
 				{
 					registers[stol(assembly_program_storage[PC].arguements[0].substr(1))] = registers[stol(assembly_program_storage[PC].arguements[1].substr(1))];
+					print_updates(cpi,stol(assembly_program_storage[PC].arguements[0].substr(1)));
 				}
 				PC++;
 			}
 			else if (assembly_program_storage[PC].instruction == "sw")
 			{
-				assembly_program_storage[PC].exec++;
 				registers[stol(assembly_program_storage[PC].arguements[1].substr(1))] = registers[stol(assembly_program_storage[PC].arguements[0].substr(1))];
+				print_updates(cpi,stol(assembly_program_storage[PC].arguements[1].substr(1)));
 				PC++;
 			}
 			else if (assembly_program_storage[PC].instruction == "addi")
 			{
-				assembly_program_storage[PC].exec++;
 				registers[stol(assembly_program_storage[PC].arguements[0].substr(1))] = registers[stol(assembly_program_storage[PC].arguements[1].substr(1))] + stol(assembly_program_storage[PC].arguements[2]);
+				print_updates(cpi,stol(assembly_program_storage[PC].arguements[0].substr(1)));
 				PC++;
 			}
 			else if (assembly_program_storage[PC].instruction == "add")
 			{
-				assembly_program_storage[PC].exec++;
 				registers[stol(assembly_program_storage[PC].arguements[0].substr(1))] = registers[stol(assembly_program_storage[PC].arguements[1].substr(1))] + registers[stol(assembly_program_storage[PC].arguements[2].substr(1))];
+				print_updates(cpi,stol(assembly_program_storage[PC].arguements[0].substr(1)));
 				PC++;
 			}
 			else if (assembly_program_storage[PC].instruction == "sub")
 			{
-				assembly_program_storage[PC].exec++;
 				registers[stol(assembly_program_storage[PC].arguements[0].substr(1))] = registers[stol(assembly_program_storage[PC].arguements[1].substr(1))] - registers[stol(assembly_program_storage[PC].arguements[2].substr(1))];
+				print_updates(cpi,stol(assembly_program_storage[PC].arguements[0].substr(1)));
 				PC++;
 			}
-			else if (assembly_program_storage[PC].instruction == "mult")
+			else if (assembly_program_storage[PC].instruction == "mul")
 			{
-				assembly_program_storage[PC].exec++;
 				registers[stol(assembly_program_storage[PC].arguements[0].substr(1))] = (registers[stol(assembly_program_storage[PC].arguements[1].substr(1))]) * (registers[stol(assembly_program_storage[PC].arguements[2].substr(1))]);
+				print_updates(cpi,stol(assembly_program_storage[PC].arguements[0].substr(1)));
 				PC++;
 			}
 			else if (assembly_program_storage[PC].instruction == "beq")
 			{
-				assembly_program_storage[PC].exec++;
 				if (registers[stol(assembly_program_storage[PC].arguements[0].substr(1))] == registers[stol(assembly_program_storage[PC].arguements[1].substr(1))])
 				{
+					cout << "current clock cycle = "<< cpi+1<<", value of register "<<stol(assembly_program_storage[PC].arguements[0].substr(1))<< " equals value of register "<<stol(assembly_program_storage[PC].arguements[1].substr(1))<<", hence jumping to line "<<stol(assembly_program_storage[PC].arguements[2])<<endl ;
 					PC = stol(assembly_program_storage[PC].arguements[2]) - 1;
 				}
 				else
 				{
+					cout << "current clock cycle = "<< cpi+1<<", value of register "<<stol(assembly_program_storage[PC].arguements[0].substr(1))<< " is not equal to value of register "<<stol(assembly_program_storage[PC].arguements[1].substr(1))<<endl ;
 					PC++;
 				}
 			}
 			else if (assembly_program_storage[PC].instruction == "j")
 			{
-				assembly_program_storage[PC].exec++;
+				cout << "current clock cycle = "<< cpi+1<<", jumping to the line "<<stol(assembly_program_storage[PC].arguements[0])<<endl;
 				PC = stol(assembly_program_storage[PC].arguements[0]) - 1;
 			}
 			else if (assembly_program_storage[PC].instruction == "bne")
 			{
-				assembly_program_storage[PC].exec++;
 				if (registers[stol(assembly_program_storage[PC].arguements[0].substr(1))] != registers[stol(assembly_program_storage[PC].arguements[1].substr(1))])
 				{
+					cout << "current clock cycle = "<< cpi+1<<", value of register "<<stol(assembly_program_storage[PC].arguements[0].substr(1))<< " not equals value of register "<<stol(assembly_program_storage[PC].arguements[1].substr(1))<<", hence jumping to line "<<stol(assembly_program_storage[PC].arguements[2])<<endl ;
 					PC = stol(assembly_program_storage[PC].arguements[2]) - 1;
 				}
 				else
 				{
+					cout << "current clock cycle = "<< cpi+1<<", value of register "<<stol(assembly_program_storage[PC].arguements[0].substr(1))<< " is equal to value of register "<<stol(assembly_program_storage[PC].arguements[1].substr(1))<<endl ;
 					PC++;
 				}
 			}
 			else if (assembly_program_storage[PC].instruction == "slt")
 			{
-				assembly_program_storage[PC].exec++;
 				if (registers[stol(assembly_program_storage[PC].arguements[1].substr(1))] < registers[stol(assembly_program_storage[PC].arguements[2].substr(1))])
 				{
 					registers[stol(assembly_program_storage[PC].arguements[0].substr(1))] = 1;
+					print_updates(cpi, stol(assembly_program_storage[PC].arguements[0].substr(1)));
 				}
 				else
 				{
 					registers[stol(assembly_program_storage[PC].arguements[0].substr(1))] = 0;
+					print_updates(cpi, stol(assembly_program_storage[PC].arguements[0].substr(1)));
 				}
 				PC++;
 			}
-			else
-			{
-				cout << "Invalid instruction : " << assembly_program_storage[PC].instruction;
-				for (string a : assembly_program_storage[PC].arguements)
-				{
-					cout << " " << a << " ";
+			else{
+				cout << "Invalid instruction : "<<assembly_program_storage[PC].instruction;
+				for(string a : assembly_program_storage[PC].arguements){
+					cout<<" "<<a<<" ";
 				}
-				cout << endl;
+				cout<<endl;
+
+
 			}
 			cpi++;
-			cout<<"----------------------- PC = "<<PC<<"-----------------------"<<endl;
-			print();
 		}
+
 	}
 	catch (std::exception e)
 	{
-		std::cout << "Invalid Instruction at line or Overflow : " << lno << '\n';
-		cout << "Invalid instruction : " << assembly_program_storage[PC].instruction;
-		for (string a : assembly_program_storage[PC].arguements)
-		{
-			cout << " " << a << " ";
-		}
-		cout << endl;
+		std::cout << "Invalid Instruction at line : " << lno << '\n';
+		cout << "Invalid instruction : "<<assembly_program_storage[PC].instruction;
+				for(string a : assembly_program_storage[PC].arguements){
+					cout<<" "<<a<<" ";
+				}
+				cout<<endl;
 		return 0;
 	}
 
-	print_exec();
-	cout << "CPI = ";
+	cout << "***********************************************"<<endl;
+	cout << "Final values of Registers-"<<endl;
+
+	for (int i = 0; i < 32; i++)
+	{
+		cout << "value of register ";
+		cout <<dec<< i;
+		cout << ": hex=";
+		cout << std::hex << registers[i];
+		cout << ", int=";
+		cout << dec << registers[i] << endl;
+	}
+	cout << "***********************************************"<<endl;
+	cout << "Total clock cycles = ";
 	cout << std::dec << cpi << endl;
+	cout << "***********************************************"<<endl;
+	cout<< "number of executions instruction wise -"<<endl;
+	map<string, int>::iterator itr; 
+	for (itr = countt.begin(); itr != countt.end(); ++itr) { 
+        cout << '\t' << itr->first 
+             << '\t' << itr->second << '\n'; 
+    }
+	cout << "***********************************************"<<endl;
+	cout<< "number of executions line wise -"<<endl;
+
+	for(int i=0;i<assembly_program_storage.size()-1;i++){
+		cout<<"line "<<i+1<<": ";
+		cout<<line_countt[i]<< " times"<<endl;
+	}
 }

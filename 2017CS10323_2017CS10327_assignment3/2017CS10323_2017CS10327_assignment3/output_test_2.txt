@@ -1,0 +1,66 @@
+this one is an infinite loop
+
+
+
+current clock cycle = 1, updated value of register 1: hex = 0, int = 0
+current clock cycle = 2, updated value of register 2: hex = 0, int = 0
+current clock cycle = 3, updated value of register 3: hex = 0, int = 0
+current clock cycle = 4, updated value of register 1: hex = a, int = 10
+current clock cycle = 5, updated value of register 2: hex = 5, int = 5
+current clock cycle = 6, jumping to the line 4
+current clock cycle = 7, updated value of register 1: hex = 14, int = 20
+current clock cycle = 8, updated value of register 2: hex = a, int = 10
+current clock cycle = 9, jumping to the line 4
+current clock cycle = 10, updated value of register 1: hex = 1e, int = 30
+current clock cycle = 11, updated value of register 2: hex = f, int = 15
+current clock cycle = 12, jumping to the line 4
+current clock cycle = 13, updated value of register 1: hex = 28, int = 40
+current clock cycle = 14, updated value of register 2: hex = 14, int = 20
+current clock cycle = 15, jumping to the line 4
+current clock cycle = 16, updated value of register 1: hex = 32, int = 50
+current clock cycle = 17, updated value of register 2: hex = 19, int = 25
+current clock cycle = 18, jumping to the line 4
+current clock cycle = 19, updated value of register 1: hex = 3c, int = 60
+current clock cycle = 20, updated value of register 2: hex = 1e, int = 30
+current clock cycle = 21, jumping to the line 4
+current clock cycle = 22, updated value of register 1: hex = 46, int = 70
+current clock cycle = 23, updated value of register 2: hex = 23, int = 35
+current clock cycle = 24, jumping to the line 4
+current clock cycle = 25, updated value of register 1: hex = 50, int = 80
+current clock cycle = 26, updated value of register 2: hex = 28, int = 40
+current clock cycle = 27, jumping to the line 4
+current clock cycle = 28, updated value of register 1: hex = 5a, int = 90
+current clock cycle = 29, updated value of register 2: hex = 2d, int = 45
+current clock cycle = 30, jumping to the line 4
+current clock cycle = 31, updated value of register 1: hex = 64, int = 100
+current clock cycle = 32, updated value of register 2: hex = 32, int = 50
+current clock cycle = 33, jumping to the line 4
+current clock cycle = 34, updated value of register 1: hex = 6e, int = 110
+current clock cycle = 35, updated value of register 2: hex = 37, int = 55
+current clock cycle = 36, jumping to the line 4
+current clock cycle = 37, updated value of register 1: hex = 78, int = 120
+current clock cycle = 38, updated value of register 2: hex = 3c, int = 60
+current clock cycle = 39, jumping to the line 4
+current clock cycle = 40, updated value of register 1: hex = 82, int = 130
+current clock cycle = 41, updated value of register 2: hex = 41, int = 65
+current clock cycle = 42, jumping to the line 4
+current clock cycle = 43, updated value of register 1: hex = 8c, int = 140
+current clock cycle = 44, updated value of register 2: hex = 46, int = 70
+current clock cycle = 45, jumping to the line 4
+current clock cycle = 46, updated value of register 1: hex = 96, int = 150
+current clock cycle = 47, updated value of register 2: hex = 4b, int = 75
+current clock cycle = 48, jumping to the line 4
+current clock cycle = 49, updated value of register 1: hex = a0, int = 160
+current clock cycle = 50, updated value of register 2: hex = 50, int = 80
+current clock cycle = 51, jumping to the line 4
+current clock cycle = 52, updated value of register 1: hex = aa, int = 170
+current clock cycle = 53, updated value of register 2: hex = 55, int = 85
+current clock cycle = 54, jumping to the line 4
+current clock cycle = 55, updated value of register 1: hex = b4, int = 180
+current clock cycle = 56, updated value of register 2: hex = 5a, int = 90
+current clock cycle = 57, jumping to the line 4
+current clock cycle = 58, updated value of register 1: hex = be, int = 190
+current clock cycle = 59, updated value of register 2: hex = 5f, int = 95
+...
+...
+...
